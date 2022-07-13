@@ -12,12 +12,12 @@ class Block:
         self.hash = self.calculateHash()
 
     def calculateHash(self):
-        return str(hashlib.sha256(str(self.index).encode() + str(self.previousHash).encode() + str(self.timestamp).encode() + json.dumps(self.data).encode()))
+        return str(hashlib.sha256(str(self.index).encode('utf-8') + str(self.previousHash).encode('utf-8') + str(self.timestamp).encode('utf-8') + json.dumps(self.data).encode('utf-8')))
 
     def printBlock(self):
         return str(self.index) + " " + str(self.timestamp) + " " + str(self.data) + " " + str(self.previousHash) + " " + str(self.hash)
 
-"""
+
 class Blockchain:
     def __init__(self):
         self.chain = [self.createGenesisBlock()]
@@ -32,9 +32,9 @@ class Blockchain:
         newBlock.previousHash = self.getLatestBlock().hash
         newBlock.hash = newBlock.calculateHash()
         self.chain.append(newBlock)
-"""
+
 sidCoin = Block(1, "07/12/2022", 4)
-#sidCoin.addBlock(Block(1, "07/12/2022", 4))
+sidCoin.addBlock(Block(1, "07/12/2022", 4))
 #sidCoin.addBlock(Block(2, "07/12/2022", 7))
 
 print(sidCoin.printBlock())
