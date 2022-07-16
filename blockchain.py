@@ -33,7 +33,7 @@ class Block:
             "Timestamp: " + self.timestamp + "\n" +
             "Data: " + self.data + "\n" +
             "Hash: " + str(self.hash) + "\n"
-            "Previous Hash: " + self.previousHash)
+            "Previous Hash: " + self.previousHash + "\n")
 
 
     def getHash(self):
@@ -49,7 +49,7 @@ class BlockChain:
 
     def mineBlock(self, block):
         try:
-            block.previousHash = self.chain[-1].getHash()
+            block.previousHash = self.chain[-1].hash
         except IndexError:
             pass
 
@@ -61,9 +61,25 @@ class BlockChain:
             else:
                 block.nonce += 1
 
-blockchain = BlockChain(4)
+    def isValid(self):
+        #Check that Hash of every block begins with four zeros
+        for block in self.chain:
+            if not block.calculateHash()[0:self.difficulty] == "0" * self.difficulty:
+                print("invalid")
+                return False
+        #Check that the previous Hash actually maches the has of the previous block
+        for i in range(1, len(self.chain)):
+            #Checks whether the previousHash actually matches the previous hash
+            if not self.chain[i].previousHash == self.chain[i-1].calculateHash():
+                return False
+        return True
+
+blockchain = BlockChain(5)
 database = ["Audienceology", "Crypto", "Ad Fraud", "BlockChain for Ad Fraud"]
 for data in database:
     blockchain.mineBlock(Block(data))
 for block in blockchain.chain:
     print(block)
+
+blockchain.mineBlock(blockchain.chain[2])
+print(blockchain.isValid())
